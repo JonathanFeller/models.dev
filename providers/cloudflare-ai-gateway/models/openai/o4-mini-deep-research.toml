@@ -1,0 +1,10 @@
+base_model = "openai/o4-mini-deep-research"
+
+[[reasoning_options]]
+type = "effort"
+values = ["medium"]
+
+[cost]
+input = 2
+output = 8
+cache_read = 0.5

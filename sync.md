@@ -148,7 +148,21 @@ Cloudflare Workers AI is implemented in `packages/core/src/sync/providers/cloudf
 - Use a dedicated token scoped to Workers AI read access so sync automation does not share deploy credentials.
 - The endpoint is parsed as Cloudflare's OpenRouter-like Workers AI metadata.
 - Model IDs map directly to TOML paths under `providers/cloudflare-workers-ai/models`.
-- This sync target does not manage `providers/cloudflare-ai-gateway`, because the AI Gateway `/compat/models` endpoint does not support `format=openrouter` and does not provide enough model metadata for authoritative catalog sync.
+
+## Cloudflare AI Gateway Notes
+
+Cloudflare AI Gateway is implemented in `packages/core/src/sync/providers/cloudflare-ai-gateway.ts`.
+
+- Source endpoint: `https://gateway.ai.cloudflare.com/v1/$ACCOUNT_ID/$GATEWAY_ID/compat/models`.
+- Reuses the Workers AI sync secrets: `CLOUDFLARE_WORKERS_AI_SYNC_ACCOUNT_ID` and `CLOUDFLARE_WORKERS_AI_SYNC_API_TOKEN` (falls back to `CLOUDFLARE_ACCOUNT_ID` / `CLOUDFLARE_API_TOKEN`).
+- Gateway ID defaults to `default` (auto-provisioned by Cloudflare). Override with `CLOUDFLARE_AI_GATEWAY_ID` or `CLOUDFLARE_GATEWAY_ID`.
+- The endpoint is thin (`id`, `cost_in`, `cost_out`, `created_at`, `owned_by` only). Sync is hybrid:
+  - **Membership + list prices** come from `/compat/models`.
+  - **Capabilities / limits / cache rates / reasoning_options** come from existing TOMLs, source `providers/openai|anthropic` files, `providers/cloudflare-workers-ai`, or `models/` via `base_model`.
+- Managed namespaces only: `openai/*`, `anthropic/*` (single-segment IDs), and `workers-ai/@cf/*`.
+- Skips whisper / aura-1 Workers AI models, dated OpenAI/Anthropic aliases, embeddings, image/audio/realtime, and nested `openai/openai/*` IDs.
+- Auto-creates undated OpenAI/Anthropic models when a source provider TOML or `models/` metadata entry exists.
+- Local models absent from the filtered API set are deleted.
 
 ## Google Notes
 
