@@ -201,15 +201,13 @@ function preserveWithApiCost(
       limit: authored.limit,
       modalities: authored.modalities,
     };
+    // Only preserve an explicit omit when the file also overrides limit.
+    // Passing context:0 previously made factorBaseModel auto-omit limit.input.
     return factorBaseModel(
       authored.base_model,
       values,
-      {
-        context: authored.limit?.context ?? 0,
-        output: authored.limit?.output ?? 0,
-        input: authored.limit?.input,
-      },
-      authored.base_model_omit,
+      factorLimit(authored.base_model, authored.limit),
+      authored.limit !== undefined ? authored.base_model_omit : undefined,
     );
   }
 
@@ -272,12 +270,12 @@ function buildNewModel(model: CloudflareAiGatewayModel): SyncedModel | undefined
     status: source?.status,
   };
 
-  const limit = source?.limit ?? { context: 0, output: 0 };
-  return factorBaseModel(baseModel, values, {
-    context: limit.context ?? 0,
-    output: limit.output ?? 0,
-    input: limit.input,
-  });
+  return factorBaseModel(
+    baseModel,
+    values,
+    factorLimit(baseModel, source?.limit),
+    source?.base_model_omit,
+  );
 }
 
 function buildNewWorkersAi(
@@ -303,11 +301,7 @@ function buildNewWorkersAi(
       modalities: source.modalities,
       limit: source.limit,
       status: source.status,
-    }, {
-      context: source.limit?.context ?? 0,
-      output: source.limit?.output ?? 0,
-      input: source.limit?.input,
-    }, source.base_model_omit as string[] | undefined);
+    }, factorLimit(source.base_model, source.limit), source.base_model_omit);
   }
 
   const openRouterShape = {
@@ -342,10 +336,7 @@ function buildNewWorkersAi(
       interleaved: source?.interleaved,
       temperature: source?.temperature,
       modalities: source?.modalities,
-    }, {
-      context: source?.limit?.context ?? 128_000,
-      output: source?.limit?.output ?? 16_384,
-    });
+    }, factorLimit(baseModel, source?.limit));
   }
 
   // Full inline model only when the Workers AI provider already authored one.
@@ -375,7 +366,34 @@ function buildNewWorkersAi(
   return undefined;
 }
 
-function sourceProviderToml(provider: string, name: string): SourceToml | undefined {
+/**
+ * Limit arg for factorBaseModel. When the gateway file does not override
+ * context, reuse the base metadata context so baseModelOmit does not treat a
+ * dummy `context: 0` as "provider has a different window" and strip
+ * `limit.input` from the inherited model.
+ */
+function factorLimit(
+  baseModel: string,
+  override: SyncedFullModel["limit"] | undefined,
+): SyncedFullModel["limit"] {
+  const base = metadataLimit(baseModel);
+  return {
+    context: override?.context ?? base.context,
+    output: override?.output ?? base.output,
+    input: override?.input,
+  };
+}
+
+function metadataLimit(baseModel: string): { context: number; output: number; input?: number } {
+  const data = readToml(path.join(MODELS_DIR, `${baseModel}.toml`));
+  return {
+    context: data?.limit?.context ?? 0,
+    output: data?.limit?.output ?? 0,
+    input: data?.limit?.input,
+  };
+}
+
+function sourceProviderToml(provider: string, name: string): (SourceToml & { base_model_omit?: string[] }) | undefined {
   return readToml(path.join(PROVIDERS_DIR, provider, "models", `${name}.toml`));
 }
 
