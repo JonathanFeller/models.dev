@@ -1,0 +1,27 @@
+name = "Google: Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image)"
+description = "Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image) is Google's fastest, most cost-efficient Gemini image model, built for high-velocity developer pipelines and rapid-fire visual exploration. It delivers text-to-image generation..."
+family = "gemini"
+release_date = "2026-06-30"
+last_updated = "2026-06-30"
+attachment = true
+reasoning = true
+temperature = true
+tool_call = false
+structured_output = false
+open_weights = false
+
+[[reasoning_options]]
+type = "effort"
+values = ["low", "medium", "high", "xhigh"]
+
+[cost]
+input = 0.25
+output = 1.5
+
+[limit]
+context = 65_536
+output = 65_536
+
+[modalities]
+input = ["image", "text", "pdf"]
+output = ["image", "text"]

@@ -1,11 +1,13 @@
 name = "Google: Lyria 3 Pro Preview"
 description = "Speech generation model for controllable voice, narration, and audio delivery"
+family = "lyria"
 release_date = "2026-03-30"
-last_updated = "2026-04-11"
+last_updated = "2026-03-30"
 attachment = true
 reasoning = false
 temperature = true
 tool_call = false
+structured_output = false
 open_weights = false
 
 [cost]
@@ -13,9 +15,9 @@ input = 0
 output = 0
 
 [limit]
-context = 1048576
-output = 65536
+context = 1_048_576
+output = 65_536
 
 [modalities]
-input = ["image", "text"]
-output = ["audio", "text"]
+input = ["text", "image"]
+output = ["text", "audio"]
