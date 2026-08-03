@@ -1,10 +1,15 @@
 # Pricing: https://api.impossibl.com/v1/models
-base_model = "alibaba/qwen3.8-max-preview"
+# Deprecated alias: this id now serves the GA qwen3.8-max on the pay-as-you-go DashScope
+# channel, so it points at the GA base model and carries the GA prices. Prefer
+# qwen/qwen3.8-max. The Token Plan channel that previously served the preview weights, and
+# its effort ladder, are gone.
+base_model = "alibaba/qwen3.8-max"
 
 [cost]
-input = 2.50
-output = 7.50
+input = 2.00
+output = 6.00
+cache_read = 0.25
+cache_write = 2.50
 
 [[reasoning_options]]
-type = "effort"
-values = ["low", "medium", "xhigh"]
+type = "toggle" # API: {"reasoning_effort":"none"}
