@@ -1,12 +1,10 @@
 # Pricing: https://api.impossibl.com/v1/models
-base_model = "google/gemma-4-31b-it"
+base_model = "meituan/longcat-2.0"
 # No caller control on this route: registry declares no reasoning control for this model. Surface:
 # POST /v1/chat/completions.
 reasoning_options = []
 
 [cost]
-input = 0.99
-output = 1.49
-
-[limit]
-context = 128_000
+input = 0.30
+output = 1.20
+cache_read = 0.006

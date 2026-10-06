@@ -1,0 +1,11 @@
+# Pricing: https://api.impossibl.com/v1/models
+base_model = "anthropic/claude-sonnet-5-5"
+# No caller control on this route: model control is "adaptiveEffort"; only the thinking object is
+# verified on POST /v1/messages.
+reasoning_options = []
+
+[cost]
+input = 2.00
+output = 10.00
+cache_read = 0.20
+cache_write = 2.50

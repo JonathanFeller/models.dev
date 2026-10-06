@@ -1,5 +1,7 @@
 # Pricing: https://api.impossibl.com/v1/models
 base_model = "moonshotai/kimi-k3"
+# No caller control on this route: no verified reach rule for provider "moonshotai" — publishing
+# [] rather than guessing.
 reasoning_options = []
 
 [cost]

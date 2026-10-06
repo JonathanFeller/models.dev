@@ -1,5 +1,7 @@
 # Pricing: https://api.impossibl.com/v1/models
 base_model = "xiaomi/mimo-v2.5"
+# No caller control on this route: model control is "toggle", but POST /v1/chat/completions only
+# exposes reasoning_effort.
 reasoning_options = []
 
 [cost]

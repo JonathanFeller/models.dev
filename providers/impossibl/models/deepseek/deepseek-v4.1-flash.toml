@@ -1,0 +1,13 @@
+# Pricing: https://api.impossibl.com/v1/models
+base_model = "deepseek/deepseek-v4.1-flash"
+# No caller control on this route: model control is "adaptiveEffort", but POST
+# /v1/chat/completions only exposes reasoning_effort.
+reasoning_options = []
+
+[cost]
+input = 0.30
+output = 1.20
+cache_read = 0.006
+
+[limit]
+context = 1_048_576

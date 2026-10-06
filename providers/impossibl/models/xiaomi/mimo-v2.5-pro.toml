@@ -1,12 +1,13 @@
 # Pricing: https://api.impossibl.com/v1/models
-base_model = "google/gemma-4-31b-it"
+base_model = "xiaomi/mimo-v2.5-pro"
 # No caller control on this route: registry declares no reasoning control for this model. Surface:
 # POST /v1/chat/completions.
 reasoning_options = []
 
 [cost]
-input = 0.99
-output = 1.49
+input = 0.435
+output = 0.87
+cache_read = 0.004
 
 [limit]
-context = 128_000
+context = 1_024_000

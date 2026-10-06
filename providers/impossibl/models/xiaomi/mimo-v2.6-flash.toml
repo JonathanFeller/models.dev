@@ -1,0 +1,10 @@
+# Pricing: https://api.impossibl.com/v1/models
+base_model = "xiaomi/mimo-v2.6-flash"
+# No caller control on this route: no verified reach rule for provider "tencent" — publishing []
+# rather than guessing.
+reasoning_options = []
+
+[cost]
+input = 0.14
+output = 0.28
+cache_read = 0.0028

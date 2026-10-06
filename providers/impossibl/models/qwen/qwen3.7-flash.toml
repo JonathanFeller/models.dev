@@ -1,10 +1,11 @@
 # Pricing: https://api.impossibl.com/v1/models
-base_model = "deepseek/deepseek-v4-pro-0813"
+base_model = "alibaba/qwen3.7-flash"
 # No caller control on this route: model control is "toggle", but POST /v1/chat/completions only
 # exposes reasoning_effort.
 reasoning_options = []
 
 [cost]
-input = 1.74
-output = 3.48
-cache_read = 0.145
+input = 0.03
+output = 0.13
+cache_read = 0.006
+cache_write = 0.038

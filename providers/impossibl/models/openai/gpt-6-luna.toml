@@ -1,10 +1,11 @@
 # Pricing: https://api.impossibl.com/v1/models
-base_model = "tencent/hy3"
+base_model = "openai/gpt-6-luna"
 
 [cost]
-input = 0.132
-output = 0.528
-cache_read = 0.033
+input = 0.10
+output = 0.50
+cache_read = 0.01
+cache_write = 0.125
 
 [[reasoning_options]]
 type = "effort"

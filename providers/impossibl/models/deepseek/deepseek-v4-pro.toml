@@ -1,5 +1,7 @@
 # Pricing: https://api.impossibl.com/v1/models
 base_model = "deepseek/deepseek-v4-pro"
+# No caller control on this route: no verified reach rule for provider "azure-foundry" —
+# publishing [] rather than guessing.
 reasoning_options = []
 
 [cost]
